@@ -7,18 +7,13 @@ from six.moves import urllib
 import requests
 import re
 
-#ville1 = input("Entrez une ville de départ: \n")
-#ville2 = input("Entrez une ville de sortie: \n")
-#print(f"Lien: https://www.bonnesroutes.com/distance/?from={ville1}&to={ville2}")
+# ville1 = input("Entrez une ville de départ: \n")
+# ville2 = input("Entrez une ville de sortie: \n")
+# print(f"Lien: https://www.bonnesroutes.com/distance/?from={ville1}&to={ville2}")
 
 # lien = requests.get(f"https://www.bonnesroutes.com/distance/?from={ville1}&to={ville2}")
-lien = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Paris")
+lien = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Marseille")
 
-
-# print(lien)
-# print(lien.content)
-
-# <div id="total_distance"></div>
 
 def web_to_file(link):
     soupeuh = str(BeautifulSoup(link.content, "html.parser"))
@@ -29,7 +24,7 @@ def web_to_file(link):
 def pars_file(file):
     web_to_file(lien)
     work_list = []
-    list_seption =[]
+    list_seption = []
 
     with open(file, 'r') as work_file:
         soup = BeautifulSoup(work_file, "html.parser")
@@ -37,10 +32,9 @@ def pars_file(file):
         for code in dat_id:
             work_list.append(code)
 
-# There is 3 '\n' in the work_list
+        # There is 3 '\n' in the work_list
         for i in "...":
             work_list.remove("\n")
-
 
         for div in work_list:
             list_seption.append(str(div))
@@ -48,11 +42,26 @@ def pars_file(file):
 
         re.compile(the_string)
         regex = re.sub("[^0-9]", "", the_string)
-        print(regex)
+        distance = int(regex)
+        return distance
+
+def time_calcul():
+    dist = pars_file("workfile.html")
+    speed = 90
+    # t = d/v <==
+    # d = v * t
+    # v = d/t
+
+    timeresult = round(dist/speed, 2)
+    print(timeresult)
+    timeresult_list = str(timeresult).split(".")
+    print(timeresult_list)
 
 
 
 
 
 
-pars_file("workfile.html")
+
+
+time_calcul()
