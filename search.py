@@ -3,16 +3,15 @@
 
 import sys
 from bs4 import BeautifulSoup
-from six.moves import urllib
 import requests
-import re
+from re import compile, sub
 
-# ville1 = input("Entrez une ville de départ: \n")
-# ville2 = input("Entrez une ville de sortie: \n")
-# print(f"Lien: https://www.bonnesroutes.com/distance/?from={ville1}&to={ville2}")
+# town1 = input("Entrez une town de départ: \n")
+# town2 = input("Entrez une town de sortie: \n")
+# print(f"Lien: https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
 
-# lien = requests.get(f"https://www.bonnesroutes.com/distance/?from={ville1}&to={ville2}")
-lien = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Marseille")
+# the_link = requests.get(f"https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
+the_link = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Marseille")
 
 
 def web_to_file(link):
@@ -22,7 +21,7 @@ def web_to_file(link):
 
 
 def pars_file(file):
-    web_to_file(lien)
+    web_to_file(the_link)
     work_list = []
     list_seption = []
 
@@ -40,28 +39,46 @@ def pars_file(file):
             list_seption.append(str(div))
         the_string = "".join(list_seption)
 
-        re.compile(the_string)
-        regex = re.sub("[^0-9]", "", the_string)
+        compile(the_string)
+        regex = sub("[^0-9]", "", the_string)
         distance = int(regex)
         return distance
 
-def time_calcul():
+
+def time_compute():
     dist = pars_file("workfile.html")
     speed = 90
+    counter_hour = 0
     # t = d/v <==
     # d = v * t
     # v = d/t
 
-    timeresult = round(dist/speed, 2)
-    print(timeresult)
+    timeresult = round(dist / speed, 2)
+
     timeresult_list = str(timeresult).split(".")
-    print(timeresult_list)
+    compute = round(int(timeresult_list[1]) * 60 / 100 + 18)
+
+    nb_pause = round(int(timeresult_list[0]) / 2)
+
+    if nb_pause > 0:
+        pop = 0
+        while pop < nb_pause:
+            compute += 15
+            pop += 1
+
+    if compute >= 60:
+        compute -= 60
+        counter_hour += 1
+
+    hours = int(timeresult_list[0]) + counter_hour
+
+    del timeresult_list[:]
+    timeresult_list.append(str(hours))
+    timeresult_list.append(str(compute))
+
+    final_time = "h ".join(timeresult_list)
+    print(f"Le temps total est : {final_time}min. ")
+    return final_time
 
 
-
-
-
-
-
-
-time_calcul()
+time_compute()
