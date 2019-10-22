@@ -6,12 +6,12 @@ from bs4 import BeautifulSoup
 import requests
 from re import compile, sub
 
-# town1 = input("Entrez une town de départ: \n")
-# town2 = input("Entrez une town de sortie: \n")
-# print(f"Lien: https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
+town1 = input("Entrez une town de départ: \n")
+town2 = input("Entrez une town de sortie: \n")
+print(f"Lien: https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
 
-# the_link = requests.get(f"https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
-the_link = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Marseille")
+the_link = requests.get(f"https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
+# the_link = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Marseille")
 
 
 def web_to_file(link):
@@ -63,12 +63,13 @@ def time_compute():
     if nb_pause > 0:
         pop = 0
         while pop < nb_pause:
-            compute += 15
+            compute += 33
             pop += 1
+            if compute >= 60:
+                compute -= 60
+                counter_hour += 1
 
-    if compute >= 60:
-        compute -= 60
-        counter_hour += 1
+
 
     hours = int(timeresult_list[0]) + counter_hour
 
