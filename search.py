@@ -1,17 +1,16 @@
 #!/usr/bin/python3
 # coding: utf-8
 
-import sys
 from bs4 import BeautifulSoup
 import requests
 from re import compile, sub
 
-town1 = input("Entrez une town de départ: \n")
-town2 = input("Entrez une town de sortie: \n")
-print(f"Lien: https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
+#town1 = input("Entrez une town de départ: \n")
+#town2 = input("Entrez une town de sortie: \n")
+#print(f"Lien: https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
 
-the_link = requests.get(f"https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
-# the_link = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Marseille")
+#the_link = requests.get(f"https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
+the_link = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Marseille")
 
 
 def web_to_file(link):
@@ -77,9 +76,14 @@ def time_compute():
     timeresult_list.append(str(hours))
     timeresult_list.append(str(compute))
 
-    final_time = "h ".join(timeresult_list)
+    final_time = " : ".join(timeresult_list)
     print(f"Le temps total est : {final_time}min. ")
     return final_time
 
+#def write_in_tab(file_name):
+#    concate = f"""Ville de départ, Ville d'arrivée, Temps de trajet total
+#{town1}, {town2}, {time_compute()}"""
+#    with open(file_name, "w") as board:
+#        board.write(concate)
 
-time_compute()
+
