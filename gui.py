@@ -21,6 +21,7 @@ value = StringVar()
 value.set("texte par défaut")
 entree = Entry(Frame1, textvariable='string', width=30)
 entree.pack(side=LEFT, padx=5, pady=5)
+print(entree)
 
 value2 = StringVar()
 value2.set("texte par défaut")
