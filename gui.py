@@ -7,85 +7,77 @@ from search import *
 town1 = "Bordeaux"
 town2 = "Marseille"
 
+
 class Application(Frame):
+
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
-        self.pack()
-        self.create_widgets()
+        self.createWidgets()
+        self.master.title("Calcul Routier")
 
-    def create_widgets(self):
-        self.hi_there = Button(self)
-        self.hi_there["text"] = "Hello World\n(click me)"
-        self.hi_there["command"] = self.say_hi
-        self.hi_there.pack(side="top")
+    def createWidgets(self):
+        self.grid(row=0, column=0, sticky='nsew')
 
-        self.input_town1 = Entry(self)
-        self.input_town1.pack(side="left")
+        self.lab_town1 = Label(self, text="Ville de départ")
+        self.lab_town1.grid(row=1, column=1)
 
-        self.input_town2 = Entry(self)
-        self.input_town2.pack(side="right")
+        self.lab_town2 = Label(self, text="Ville d'arrivé")
+        self.lab_town2.grid(row=1, column=2)
 
+        self.input_town1 = Entry(self, width=20)
+        self.input_town1.grid(row=2, column=1)
 
-        self.quit = Button(self, text="QUIT", fg="red",
-                              command=self.print_input)
-        self.quit.pack(side="bottom")
+        self.input_town2 = Entry(self, width=20)
+        self.input_town2.grid(row=2, column=2)
 
-    def say_hi(self):
-        print("hi there, everyone!")
+        self.on_road = Button(self, text="En route", fg="Blue", command=self.letsGo)
+        self.on_road.grid(row=2, column=3)
 
-    def print_input(self):
-        print(self.input_town1.get())
+        self.to_excel = Button(self, text="Exporter dans un tableur", fg="Green", command=self.tablor)
+        self.to_excel.grid(row=2, column=4)
+
+        self.lab_start = Label(self, text="Ville de départ", borderwidth=1, width=20, bg="#66b3ff", relief="groove")
+        self.lab_start.grid(row=4, column=1)
+
+        self.lab_end = Label(self, text="Ville d'arrivé", borderwidth=1, width=20, bg="#66b3ff", relief="groove")
+        self.lab_end.grid(row=4, column=2)
+
+        self.lab_time = Label(self, text="Temps de trajet", borderwidth=1, width=20, bg="#66b3ff", relief="groove")
+        self.lab_time.grid(row=4, column=3)
+
+        self.lab_start2 = Label(self, text="________", borderwidth=1, width=20, bg="#b3d9ff", relief="flat")
+        self.lab_start2.grid(row=6, column=1)
+
+        self.lab_end2 = Label(self, text="________", borderwidth=1, width=20, bg="#b3d9ff", relief="flat")
+        self.lab_end2.grid(row=6, column=2)
+
+        self.lab_time2 = Label(self, text="________", borderwidth=1, width=20, bg="#b3d9ff", relief="flat")
+        self.lab_time2.grid(row=6, column=3)
+
+    def printInput(self):
+        print(self.input_town1)
         print(self.input_town2.get())
+        print(towns(self.input_town1, self.input_town2))
+
+    def letsGo(self):
+        start_town = self.input_town1.get().capitalize()
+        end_town = self.input_town2.get().capitalize()
+        dat_link = towns(start_town, end_town)
+        webToFile(dat_link)
+        the_distance = parsFile("workfile.html")
+        self.lab_start2["text"] = start_town
+        self.lab_end2["text"]= end_town
+        self.lab_time2["text"] = timeCompute(the_distance)
+        return timeCompute(the_distance)
+
+    def tablor(self):
+        starteuh = self.input_town1.get()
+        endeuh = self.input_town2.get()
+        writeInTab("roadboard.ods", starteuh, endeuh)
+
 
 root = Tk()
+root.geometry("700x150-300+300")
 app = Application(master=root)
 app.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#    window = Tk()
-
-#    Frame1 = Frame(window, borderwidth=2, relief=GROOVE)
-#    Frame1.pack(side=BOTTOM, padx=60, pady=60)
-
-#    Frame3 = Frame(window, borderwidth=2, relief=GROOVE)
-#    Frame3.pack(side=TOP, padx=10, pady=10)
-
-#    times = time_compute()
-
-#    value = StringVar()
-#    value.set("texte par défaut")
-#    entree = Entry(Frame1, textvariable='string', width=30)
-#    entree.pack(side=LEFT, padx=5, pady=5)
-#    print(entree.get())
-
-#    value2 = StringVar()
-#    value2.set("texte par défaut")
-#    entree2 = Entry(Frame1, textvariable='string', width=30)
-#    entree.pack(side=RIGHT, padx=5, pady=5)
-
-#    Label(Frame3, bg='#3385ff', text=" Ville de Départ ", borderwidth=1, relief=GROOVE).grid(row=1, column=1)
-#    Label(Frame3, bg='#3385ff', text=" Ville d'arrivé ", borderwidth=1, relief=GROOVE).grid(row=1, column=2)
-#    Label(Frame3, bg='#3385ff', text=" Temps de trajet total ", borderwidth=1, relief=GROOVE).grid(row=1, column=3)
-#    Label(Frame3, bg='#ffff99', text=town1, borderwidth=1, relief=FLAT).grid(row=2, column=1)
-#    Label(Frame3, bg='#ffff99', text=town2, borderwidth=1, relief=FLAT).grid(row=2, column=2)
-#    Label(Frame3, bg='#ffff99', text=times, borderwidth=1, relief=FLAT).grid(row=2, column=3)
-#    window.mainloop()

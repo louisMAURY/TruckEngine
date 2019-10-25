@@ -5,28 +5,27 @@ from bs4 import BeautifulSoup
 import requests
 from re import compile, sub
 
-#town1 = input("Entrez une town de départ: \n")
-#town2 = input("Entrez une town de sortie: \n")
-#print(f"Lien: https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
 
-#the_link = requests.get(f"https://www.bonnesroutes.com/distance/?from={town1}&to={town2}")
-the_link = requests.get("https://www.bonnesroutes.com/distance/?from=Bordeaux&to=Marseille")
+def towns(start, end):
+    the_link = f"https://www.bonnesroutes.com/distance/?from={start}&to={end}"
+    content = requests.get(the_link)
+    return content
 
 
-def web_to_file(link):
+def webToFile(link):
     soupeuh = str(BeautifulSoup(link.content, "html.parser"))
     with open("workfile.html", "w") as w_file:
         w_file.write(soupeuh)
 
 
-def pars_file(file):
-    web_to_file(the_link)
+def parsFile(file):
     work_list = []
     list_seption = []
 
     with open(file, 'r') as work_file:
         soup = BeautifulSoup(work_file, "html.parser")
         dat_id = soup.find(id="total_distance")
+
         for code in dat_id:
             work_list.append(code)
 
@@ -44,8 +43,7 @@ def pars_file(file):
         return distance
 
 
-def time_compute():
-    dist = pars_file("workfile.html")
+def timeCompute(dist):
     speed = 90
     counter_hour = 0
     # t = d/v <==
@@ -77,13 +75,11 @@ def time_compute():
     timeresult_list.append(str(compute))
 
     final_time = " : ".join(timeresult_list)
-    print(f"Le temps total est : {final_time}min. ")
     return final_time
 
-#def write_in_tab(file_name):
-#    concate = f"""Ville de départ, Ville d'arrivée, Temps de trajet total
-#{town1}, {town2}, {time_compute()}"""
-#    with open(file_name, "w") as board:
-#        board.write(concate)
 
-
+def writeInTab(file_name, start, end):
+    concate = f"""Ville de départ, Ville d'arrivée, Temps de trajet total
+{start}, {end}, {timeCompute(parsFile("workfile.html"))}"""
+    with open(file_name, "w") as board:
+        board.write(concate)
