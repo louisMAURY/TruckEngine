@@ -40,7 +40,7 @@ class Application(Frame):
         self.lab_start = Label(self, text="Ville de départ", borderwidth=1, width=20, bg="#66b3ff", relief="groove")
         self.lab_start.grid(row=4, column=1)
 
-        self.lab_end = Label(self, text="Ville d'arrivé", borderwidth=1, width=20, bg="#66b3ff", relief="groove")
+        self.lab_end = Label(self, text="Ville d'arrivée", borderwidth=1, width=20, bg="#66b3ff", relief="groove")
         self.lab_end.grid(row=4, column=2)
 
         self.lab_time = Label(self, text="Temps de trajet", borderwidth=1, width=20, bg="#66b3ff", relief="groove")
